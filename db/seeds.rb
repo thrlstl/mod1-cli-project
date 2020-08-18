@@ -6,7 +6,9 @@ MenuItem.destroy_all
 10.times do 
 User.create(
 name: Faker::Name.unique.name,
-age: Faker::Number.number(digits: 2)
+address: Faker::Address.full_address,
+phone: Faker::PhoneNumber.cell_phone
+
 )
 end
 
