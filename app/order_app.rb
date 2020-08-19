@@ -44,9 +44,6 @@ def app_menu
     clear!
 end
 
-login_signup
-app_menu
-
 ###
 
 # APPLICATION MENU
@@ -125,5 +122,3 @@ app_menu
 #     puts "Phone Number - #{customer.phone}"
 
 # end
-
-binding.pry
