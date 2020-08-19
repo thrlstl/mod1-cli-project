@@ -5,10 +5,11 @@ MenuItem.destroy_all
 
 10.times do 
 User.create(
-name: Faker::Name.unique.name,
-address: Faker::Address.full_address,
-phone: Faker::PhoneNumber.cell_phone
-
+    username: Faker::Internet.username(specifier: 5..8),
+    password: Faker::Internet.password(min_length: 10, max_length: 20),   
+    name: Faker::Name.unique.name,
+    address: Faker::Address.full_address,
+    phone: Faker::PhoneNumber.cell_phone
 )
 end
 
