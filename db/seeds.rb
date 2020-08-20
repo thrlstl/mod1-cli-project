@@ -14,7 +14,7 @@ end
 
 MenuItem.create(
 name: "Big Mac",
-price: 3.5,
+price: 3.55,
 restaurant: "McDonalds"
 )
 MenuItem.create(
@@ -48,7 +48,7 @@ price: 4.99,
 restaurant: "Subway"
 )
 MenuItem.create(
-name: "picy Italian",
+name: "Spicy Italian",
 price: 5.49,
 restaurant: "Subway"
 )
@@ -69,7 +69,7 @@ restaurant: "Burger King"
 )
 MenuItem.create(
 name: "Whopper Jr. – Meal",
-price: 5.10,
+price: 5.15,
 restaurant: "Burger King"
 )
 MenuItem.create(

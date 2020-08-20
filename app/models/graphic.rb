@@ -22,5 +22,6 @@ def graphic
     "     
     sleep(1)
     puts "by Matthew Steele & Muhammet Yildiz"
-    puts                                
+    puts
+    sleep(1)                               
 end
