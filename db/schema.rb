@@ -15,11 +15,13 @@ ActiveRecord::Schema.define(version: 2020_08_17_191700) do
   create_table "menu_items", force: :cascade do |t|
     t.string "name"
     t.float "price"
+    t.string "restaurant"
   end
 
   create_table "orders", force: :cascade do |t|
     t.integer "user_id"
     t.integer "menu_item_id"
+    t.float "order_total"
   end
 
   create_table "users", force: :cascade do |t|
