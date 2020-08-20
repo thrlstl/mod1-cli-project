@@ -9,3 +9,4 @@ gem "require_all"
 gem "faker"
 gem 'rake' , '>= 0.9.2'
 gem "tty-prompt"
+gem 'colorize'

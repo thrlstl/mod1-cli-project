@@ -1,6 +1,11 @@
 require_relative '../config/environment'
 
-login_signup
-app_menu
+system "clear"
 
-binding.pry
+$prompt = TTY::Prompt.new
+
+graphic
+login_signup
+cli_menu
+
+# binding.pry
