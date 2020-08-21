@@ -31,16 +31,6 @@ def graphic
     sleep(1)                               
 end
 
-# def logo
-#   sleep(1)
-#   puts "
-#   █████████████████    ███ 
-#   ██     ██     ████  ████ 
-#   █████  █████  ██ ████ ██ 
-#   ██     ██     ██  ██  ██ ©"
-#   sleep(1)
-# end
-
 def menu_header
   sleep(0.5)
   puts "                                         
@@ -70,29 +60,6 @@ def restaurants_header
   puts
   sleep(0.5)
 end
-
-def transition_graphic
-  10.times {
-  sleep(0.08)
-  puts "                                         
-    ┏━━━━━━━┓
-    | FAST! |
-    ┗━━━━━━━┛ "
-  sleep(0.08)
-  puts "                                         
-              ┏━━━━━━━┓
-              | FOOD! |
-              ┗━━━━━━━┛ "
-  sleep(0.08)
-  puts "                                         
-                            ┏━━━━━┓
-                            | ME! |
-                            ┗━━━━━┛ "
-  sleep(0.08)
-  system "clear"
-}
-end
-
 
 def mcdonalds_menu
   sleep(0.5)
@@ -174,9 +141,3 @@ def account_information_graphic
     "
   puts
 end
-
-
-# puts "Name - #{@customer.name}"
-#     puts "Username - @#{@customer.username}"
-#     puts "Address - #{@customer.address}"
-#     puts "Phone Number - #{@customer.phone}"
