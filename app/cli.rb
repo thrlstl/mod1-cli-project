@@ -1,21 +1,9 @@
 require_relative '../config/environment'
 
-def logo
-    sleep(1)
-    puts "
-    █████████████████    ███ 
-    ██     ██     ████  ████ 
-    █████  █████  ██ ████ ██ 
-    ██     ██     ██  ██  ██ ©"
-    sleep(1)
-end
-
 # Allows an existing user to login via username
 # or creates a new user if the username doesn't exist.
 def login_signup
-    puts "LOGIN ⬇ (username)"
-    puts
-    customer_username = gets.chomp
+    customer_username = $prompt.ask("Username:", value: "")
     @customer = User.find_or_create_by(username: customer_username)
 end
 
@@ -23,7 +11,7 @@ end
 # from a menu of options which redirects the terminal.
 def cli_menu
     system "clear"
-    logo
+    menu_header
     puts
     puts "Welcome, #{@customer.name}!"
     puts
@@ -42,7 +30,7 @@ end
 
 def full_menu
     system "clear"
-    puts "FULL MENU ⬇"
+    master_menu
     puts
     MenuItem.print_menu
     puts
@@ -57,8 +45,10 @@ end
 
 def restaurants_menu
     system "clear"
-    puts
+    restaurants_header
     restaurant_selection = $prompt.select("SELECT AN OPTION ⬇", ["McDonalds", "Subway", "Burger King"])
+    system "clear"
+    # transition_graphic
     restaurant_menu(restaurant_selection)
 end
 
@@ -66,8 +56,13 @@ end
 
 def restaurant_menu(restaurant_selection)
     system "clear"
-    puts "#{restaurant_selection} Menu ⬇"
-    puts
+    if restaurant_selection == "McDonalds"
+        mcdonalds_menu
+    elsif restaurant_selection == "Subway"
+        subway_menu
+    else restaurant_selection == "Burger King" 
+        burger_king_menu
+    end
     MenuItem.menu_by_restaurant(restaurant_selection)
     puts
     $prompt.select("SELECT AN OPTION ⬇") do |menu|
@@ -81,9 +76,8 @@ end
   
 def place_an_order
     system "clear"
-    puts "What would you like to order?"
+    place_order_header
     puts
-    puts "FULL MENU ⬇"
     MenuItem.print_menu
     puts
     item_number = $prompt.ask("I'll have a number... ", value: "")
@@ -91,11 +85,20 @@ def place_an_order
             menu_item_id: item_number, 
             user_id: @customer.id
             )
-    puts "Thank you #{@customer.name} for your order! (#{new_order.id})"
     cost = MenuItem.price_by_id(item_number.to_i)
-    puts "Your total is: $#{cost}."
+    sleep(0.5)
+    puts "                                         
+    ┏━━♡ Your Receipt ♡━━━━━━━━━━━━━━━━━━━━━━--~~
+    | Thank you #{@customer.name} for your order! 
+    |   
+    |   ORDER NUMBER - ##{new_order.id}            
+    |   ORDER TOTAL - $#{cost}                  
+    ┗━━━━━━━━━━━━━━━━━━━━♡ Come again! ♡━━━━━--~~"
+    puts
+    sleep(0.5)
     $prompt.select("SELECT AN OPTION ⬇") do |menu|
         menu.choice "Place Another Order", -> { place_an_order }
+        menu.choice "Cancel Order", -> { cancel_order }
         menu.choice "Main Menu", -> { cli_menu }
         menu.choice "Logout", -> { exit }
     end
@@ -105,20 +108,34 @@ end
 
 def order_by_restaurant(restaurant_selection)
     system "clear"
-    puts
-    puts "What would you like to order from #{restaurant_selection}?"
-    puts
+    if restaurant_selection == "McDonalds"
+        mcdonalds_menu
+    elsif restaurant_selection == "Subway"
+        subway_menu
+    else restaurant_selection == "Burger King" 
+        burger_king_menu
+    end
     MenuItem.menu_by_restaurant(restaurant_selection)
     puts
-    item_number = $prompt.ask("I'll have a number... ", value: "?")
+    item_number = $prompt.ask("I'll have a number... ", value: "")
         new_order = Order.create(
             menu_item_id: item_number, 
             user_id: @customer.id
             )
-    puts "Thank you #{@customer.name} for your order! (##{new_order.id})"
+    cost = MenuItem.price_by_id(item_number.to_i)
+    sleep(0.5)
+    puts "                                         
+    ┏━━♡ Your Receipt ♡━━━━━━━━━━━━━━━━━━━━━━--~~
+    | Thank you #{@customer.name} for your order! 
+    |   
+    |   ORDER NUMBER - ##{new_order.id}            
+    |   ORDER TOTAL - $#{cost}                  
+    ┗━━━━━━━━━━━━━━━━━━━━♡ Come again! ♡━━━━━--~~"
     puts
+    sleep(0.5)
     $prompt.select("SELECT AN OPTION ⬇") do |menu|
         menu.choice "Place Another Order", -> { restaurants_menu }
+        menu.choice "Cancel Order", -> { cancel_order }
         menu.choice "Main Menu", -> { cli_menu }
         menu.choice "Logout", -> { exit }
     end
@@ -128,12 +145,13 @@ end
 
 def customer_orders
     system "clear"
-    puts "YOUR ORDERS ⬇"
-    puts
-    @customer.orders.each { |order| p "Order # - #{order.id}"}
-    # binding.pry
-    # Menu Item - #{MenuItem.all[order.menu_item_id][:name]}
-    #  Menu Item - #{MenuItem.all[order.menu_item_id][:name]} | Price - $#{MenuItem.all[order.menu_item_id][:price]} | Restaurant - #{MenuItem.all[order.menu_item_id][:restaurant]} "}
+    customer_orders_header
+    @customer.orders.each do |order| 
+        puts "
+    ┏━━♡ #{@customer.name} ♡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━--~~
+    | Order - #{order.id} | #{MenuItem.find_by(id: order.menu_item_id).name} | $#{MenuItem.find_by(id: order.menu_item_id).price} | #{MenuItem.find_by(id: order.menu_item_id).restaurant}
+    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━--~~"  
+    end 
     puts
     $prompt.select("SELECT AN OPTION ⬇") do |menu|
         menu.choice "Cancel Order", -> { cancel_order }
@@ -146,16 +164,25 @@ end
 
 def cancel_order
     system "clear"
-    puts "YOUR ORDERS ⬇"
+    cancel_order_header
+    @customer.orders.each do |order| 
+        puts "
+    ┏━━♡ #{@customer.name} ♡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━--~~
+    | Order - #{order.id} | #{MenuItem.find_by(id: order.menu_item_id).name} | $#{MenuItem.find_by(id: order.menu_item_id).price} | #{MenuItem.find_by(id: order.menu_item_id).restaurant}
+    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━--~~"  
+    end 
     puts
-    @customer.orders.each { |order| p "Order # - #{order.id} | Menu Item - #{order.menu_item_id}"}
-    puts
-    puts "Enter ORDER NUMBER (#) to CANCEL"
-    id_input = gets.chomp
+    id_input = $prompt.ask("Confirm ORDER NUMBER to CANCEL... ", value: "")
     Order.destroy(id_input)
+    sleep(0.5)
+    puts "                                         
+    ┏━━♡ Void Receipt ♡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━--~~
+    | #{@customer.name}, your order was cancelled. 
+    |   
+    |   ORDER NUMBER - ##{id_input}                            
+    ┗━━━━━━━━━━━━━━━━━━━━♡ Come again! ♡━━━━━━━━━━━━━--~~"
     puts
-    puts "Thank you #{@customer.name}! Your order (##{id_input}) has been cancelled."
-    puts
+    sleep(0.5)
     $prompt.select("SELECT AN OPTION ⬇") do |menu|
         menu.choice "Place Another Order", -> { place_an_order }
         menu.choice "Main Menu", -> { cli_menu }
@@ -167,13 +194,7 @@ end
 
 def account_information
     system "clear"
-    puts "ACCOUNT INFORMATION"
-    puts
-    puts "Name - #{@customer.name}"
-    puts "Username - @#{@customer.username}"
-    puts "Address - #{@customer.address}"
-    puts "Phone Number - #{@customer.phone}"
-    puts
+    account_information_graphic
     $prompt.select("SELECT AN OPTION ⬇") do |menu|
         menu.choice "Main Menu", -> { cli_menu }
         menu.choice "Logout", -> { exit }
