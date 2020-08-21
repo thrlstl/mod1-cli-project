@@ -38,6 +38,16 @@ price: 4.35,
 restaurant: "McDonalds"
 )
 MenuItem.create(
+name: "Double Quarter Pounder",
+price: 4.69,
+restaurant: "McDonalds"
+)
+MenuItem.create(
+name: "Buttermilk Crispy Chicken",
+price: 4.39,
+restaurant: "McDonalds"
+)
+MenuItem.create(
 name: "Chocolate Shake",
 price: 3.29,
 restaurant: "Subway"
@@ -63,6 +73,16 @@ price: 5.29,
 restaurant: "Subway"
 )
 MenuItem.create(
+name: "Roast Beef",
+price: 6.29,
+restaurant: "Subway"
+)
+MenuItem.create(
+name: "Chicken Caesar Melt",
+price: 4.79,
+restaurant: "Subway"
+)
+MenuItem.create(
 name: "Double Whopper",
 price: 5.29,
 restaurant: "Burger King"
@@ -85,6 +105,16 @@ restaurant: "Burger King"
 MenuItem.create(
 name: "Cookies",
 price: 1.75,
+restaurant: "Burger King"
+)
+MenuItem.create(
+name: "Onion Rings",
+price: 2.19,
+restaurant: "Burger King"
+)
+MenuItem.create(
+name: "Bacon Cheeseburger",
+price: 1.49,
 restaurant: "Burger King"
 )
 
@@ -114,7 +144,26 @@ Order.create(
     menu_item_id: MenuItem.third.id   
 )
 Order.create(
-    user_id: User.first.id,
+    user_id: User.second.id,
     menu_item_id: MenuItem.last.id   
 )
-
+Order.create(
+    user_id: User.fourth.id,
+    menu_item_id: MenuItem.last.id   
+)
+Order.create(
+    user_id: User.last.id,
+    menu_item_id: MenuItem.first.id   
+)
+Order.create(
+    user_id: User.second.id,
+    menu_item_id: MenuItem.third.id   
+)
+Order.create(
+    user_id: User.third.id,
+    menu_item_id: MenuItem.second.id   
+)
+Order.create(
+    user_id: User.first.id,
+    menu_item_id: MenuItem.fourth.id   
+)

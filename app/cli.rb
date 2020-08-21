@@ -48,7 +48,6 @@ def restaurants_menu
     restaurants_header
     restaurant_selection = $prompt.select("SELECT AN OPTION ⬇", ["McDonalds", "Subway", "Burger King"])
     system "clear"
-    # transition_graphic
     restaurant_menu(restaurant_selection)
 end
 
