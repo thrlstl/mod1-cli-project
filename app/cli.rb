@@ -34,12 +34,27 @@ def full_menu
     puts
     MenuItem.print_menu
     puts
+    # binding.pry
     $prompt.select("SELECT AN OPTION ⬇") do |menu|
         menu.choice "Order", -> { place_an_order }
+        menu.choice "Most Popular", -> { most_popular }
         menu.choice "Main Menu", -> { cli_menu }
         menu.choice "Logout", -> { exit }
     end
 end
+
+def most_popular
+    system "clear"
+    MenuItem.popular
+    puts
+    # binding.pry
+    $prompt.select("SELECT AN OPTION ⬇") do |menu|
+        menu.choice "Back to Options", -> { full_menu }
+        menu.choice "Main Menu", -> { cli_menu }
+        menu.choice "Logout", -> { exit }
+    end
+end
+
 
 ###
 
@@ -66,6 +81,7 @@ def restaurant_menu(restaurant_selection)
     puts
     $prompt.select("SELECT AN OPTION ⬇") do |menu|
         menu.choice "Order", -> { order_by_restaurant(restaurant_selection) }
+        menu.choice "Back to Restaurants", -> { restaurants_menu }
         menu.choice "Main Menu", -> { cli_menu }
         menu.choice "Logout", -> { exit }
     end
@@ -195,6 +211,7 @@ def account_information
     system "clear"
     account_information_graphic
     $prompt.select("SELECT AN OPTION ⬇") do |menu|
+        menu.choice "My Orders", -> { customer_orders }
         menu.choice "Main Menu", -> { cli_menu }
         menu.choice "Logout", -> { exit }
     end
